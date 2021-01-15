@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: mysql
--- 生成日時: 2021 年 1 月 14 日 14:05
+-- 生成日時: 2021 年 1 月 15 日 12:41
 -- サーバのバージョン： 5.7.32
 -- PHP のバージョン: 7.4.11
 
@@ -28,9 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `details` (
+  `detail_id` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
-  `item_id` int(100) NOT NULL,
-  `amount` int(100) NOT NULL
+  `item_id` int(11) NOT NULL,
+  `price` int(11) DEFAULT NULL,
+  `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -50,6 +52,12 @@ CREATE TABLE `orders` (
 --
 
 --
+-- テーブルのインデックス `details`
+--
+ALTER TABLE `details`
+  ADD PRIMARY KEY (`detail_id`);
+
+--
 -- テーブルのインデックス `orders`
 --
 ALTER TABLE `orders`
@@ -58,6 +66,12 @@ ALTER TABLE `orders`
 --
 -- ダンプしたテーブルの AUTO_INCREMENT
 --
+
+--
+-- テーブルの AUTO_INCREMENT `details`
+--
+ALTER TABLE `details`
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- テーブルの AUTO_INCREMENT `orders`
