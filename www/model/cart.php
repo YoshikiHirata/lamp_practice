@@ -176,6 +176,18 @@ function validate_cart_purchase($carts){
   return true;
 }
 
+//order, detailsテーブルへの追加処理
+function add_order_details($db, $user_id, $item_id ) {
+  //$cartに取得した値を代入
+  $cart = get_user_cart($db, $user_id, $item_id);
+  //orderテーブルへ追加する場合
+  if($cart['user_id'] === false){
+    return insert_order($db, $cart['user_id']);
+  }
+  //detailsテーブルに追加する場合
+  return insert_details($db, $order_id, $cart['item_id'], $cart['price'], $cart['amount'] );
+}
+
 //orderテーブルにデータ(値)を入れる
 function insert_order($db, $user_id){
   $sql = "
