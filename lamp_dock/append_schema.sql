@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `details` (
   `detail_id` int(11) NOT NULL,
-  `order_id` int(11) DEFAULT NULL,
+  `order_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `price` int(11) DEFAULT NULL,
+  `price` int(11) NOT NULL,
   `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -43,7 +43,7 @@ CREATE TABLE `details` (
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
-  `user_id` int(100) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -102,6 +102,7 @@ function update_item_status($db, $item_id, $status){
   return execute_query($db, $sql, [$status, $item_id]);
 }
 
+//商品在庫の更新処理
 function update_item_stock($db, $item_id, $stock){
   $sql = "
     UPDATE
@@ -146,6 +147,7 @@ function delete_item($db, $item_id){
 
 // 非DB
 
+//statusが1(公開)であればtrue
 function is_open($item){
   return $item['status'] === 1;
 }

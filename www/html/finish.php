@@ -17,6 +17,7 @@ $user = get_login_user($db);
 $carts = get_user_carts($db, $user['user_id']);
 $token = get_post('token');
 
+//カート内購入処理
 if (is_valid_csrf_token($token)) {
   if (purchase_carts($db, $carts) === false) {
     set_error('商品が購入できませんでした。');
