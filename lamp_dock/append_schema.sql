@@ -44,7 +44,7 @@ CREATE TABLE `details` (
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `created` datetime NOT NULL
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

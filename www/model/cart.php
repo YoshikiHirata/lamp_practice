@@ -116,6 +116,7 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  $db->beginTransaction();
   foreach($carts as $cart){
     //在庫数より購入個数が多い場合
     if(update_item_stock(
@@ -126,8 +127,14 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
+  add_order_details($db,$carts);
   //カート内情報の消去
   delete_user_carts($db, $carts[0]['user_id']);
+  if(has_error() === true){
+    $db->rollback();
+  } else{
+    $db->commit();
+  }
 }
 
 //カート内情報の消去処理
@@ -177,23 +184,30 @@ function validate_cart_purchase($carts){
 }
 
 //order, detailsテーブルへの追加処理
-function add_order_details($db, $user_id, $item_id ) {
-  //$cartに取得した値を代入
-  $cart = get_user_cart($db, $user_id, $item_id);
+function add_order_details($db, $carts) {
   //orderテーブルへ追加する場合
-  if($cart['user_id'] === false){
-    return insert_order($db, $cart['user_id']);
+  if(insert_orders ($db, $carts[0]['user_id']) === false){
+    set_error('履歴データの作成に失敗しました');
+    return false;
   }
+  $order_id = $db->lastInsertId();
+
   //detailsテーブルに追加する場合
-  return insert_details($db, $order_id, $cart['item_id'], $cart['price'], $cart['amount'] );
+  foreach($carts as $cart){
+    if (insert_details ($db, $order_id, $cart['item_id'], $cart['price'], $cart['amount']) === false){
+      set_error($cart['name'] . 'の明細データ作成に失敗しました');
+      return false;
+    }
+  }
+  return true;
 }
 
 //orderテーブルにデータ(値)を入れる
-function insert_order($db, $user_id){
+function insert_orders($db, $user_id){
   $sql = "
     INSERT INTO
-      order(
-        user_id,
+      orders(
+        user_id
       )
     VALUES(?)
   ";
@@ -205,7 +219,7 @@ function insert_details($db, $order_id, $item_id, $price, $amount){
   $sql = "
     INSERT INTO
       details(
-        order_id
+        order_id,
         item_id,
         price,
         amount
