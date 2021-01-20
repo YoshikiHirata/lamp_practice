@@ -16,6 +16,7 @@ function get_db_connect(){
   return $dbh;
 }
 
+//結果セットから単一の行を取得
 function fetch_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -27,6 +28,7 @@ function fetch_query($db, $sql, $params = array()){
   return false;
 }
 
+//結果セット行を含む配列を取得
 function fetch_all_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
@@ -38,12 +40,14 @@ function fetch_all_query($db, $sql, $params = array()){
   return false;
 }
 
+//クエリの実行
 function execute_query($db, $sql, $params = array()){
   try{
     $statement = $db->prepare($sql);
     return $statement->execute($params);
   }catch(PDOException $e){
     set_error('更新に失敗しました。');
+    set_error($e->getMessage());
   }
   return false;
 }

@@ -55,6 +55,7 @@ function get_errors(){
   return $errors;
 }
 
+//エラーが1つでもある場合はtrueを返す
 function has_error(){
   return isset($_SESSION['__errors']) && count($_SESSION['__errors']) !== 0;
 }
