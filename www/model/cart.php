@@ -127,12 +127,16 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
+  //購入履歴・詳細追加関数
   add_order_details($db,$carts);
   //カート内情報の消去
   delete_user_carts($db, $carts[0]['user_id']);
+  //エラー確認
   if(has_error() === true){
+    //エラーがあればロールバック
     $db->rollback();
   } else{
+    //なければコミット
     $db->commit();
   }
 }
