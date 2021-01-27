@@ -14,6 +14,7 @@
 
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
+    <?php if(count($orders) > 0){ ?>
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
@@ -39,6 +40,9 @@
         <?php } ?>
       </tbody>
     </table>
+    <?php } else { ?>
+      <p>購入履歴はありません。</p>
+    <?php } ?> 
   </div>
 </body>
 
