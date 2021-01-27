@@ -5,6 +5,7 @@ function dd($var){
   exit();
 }
 
+//リダイレクト関数
 function redirect_to($url){
   header('Location: ' . $url);
   exit;

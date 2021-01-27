@@ -2,6 +2,7 @@
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 
+//ユーザーIDの取得
 function get_user($db, $user_id){
   $sql = "
     SELECT
@@ -19,6 +20,7 @@ function get_user($db, $user_id){
   return fetch_query($db, $sql, [$user_id]);
 }
 
+//ユーザー名の取得
 function get_user_by_name($db, $name){
   $sql = "
     SELECT
@@ -36,11 +38,14 @@ function get_user_by_name($db, $name){
   return fetch_query($db, $sql, [$name]);
 }
 
+//ユーザーのログイン確認関数
 function login_as($db, $name, $password){
   $user = get_user_by_name($db, $name);
+  //ユーザー名またはパスワードが違ったらfalse
   if($user === false || $user['password'] !== $password){
     return false;
   }
+  //そうでなければセッションに保存
   set_session('user_id', $user['user_id']);
   return $user;
 }
