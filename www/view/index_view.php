@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <?php include VIEW_PATH . 'templates/head.php'; ?>
-  
+
   <title>商品一覧</title>
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'index.css'); ?>">
 </head>
+
 <body>
   <?php include VIEW_PATH . 'templates/header_logined.php'; ?>
-  
+
 
   <div class="container">
     <h1>商品一覧</h1>
@@ -16,32 +18,54 @@
 
     <div class="card-deck">
       <div class="row">
-      <?php foreach($items as $item){ ?>
-        <div class="col-6 item">
-          <div class="card h-100 text-center">
-            <div class="card-header">
-              <?php print(h($item['name'])); ?>
+        <?php foreach ($out_items as $item) { ?>
+          <div class="col-6 item">
+            <div class="card h-100 text-center">
+              <div class="card-header">
+                <?php print(h($item['name'])); ?>
+              </div>
+              <figure class="card-body">
+                <img class="card-img" src="<?php print(IMAGE_PATH . h($item['image'])); ?>">
+                <figcaption>
+                  <?php print(number_format(h($item['price']))); ?>円
+                  <?php if ($item['stock'] > 0) { ?>
+                    <form action="index_add_cart.php" method="post">
+                      <input type="submit" value="カートに追加" class="btn btn-primary btn-block">
+                      <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
+                    </form>
+                  <?php } else { ?>
+                    <p class="text-danger">現在売り切れです。</p>
+                  <?php } ?>
+                </figcaption>
+              </figure>
             </div>
-            <figure class="card-body">
-              <img class="card-img" src="<?php print(IMAGE_PATH . h($item['image'])); ?>">
-              <figcaption>
-                <?php print(number_format(h($item['price']))); ?>円
-                <?php if($item['stock'] > 0){ ?>
-                  <form action="index_add_cart.php" method="post">
-                    <input type="submit" value="カートに追加" class="btn btn-primary btn-block">
-                    <input type="hidden" name="item_id" value="<?php print(h($item['item_id'])); ?>">
-                  </form>
-                <?php } else { ?>
-                  <p class="text-danger">現在売り切れです。</p>
-                <?php } ?>
-              </figcaption>
-            </figure>
           </div>
-        </div>
-      <?php } ?>
+        <?php } ?>
       </div>
     </div>
   </div>
-  
+  <div class="pagination">
+    <ul class="pagination">
+      <?php if($now_page > 1){ ?>
+        <li><a href='?page=<?php print $now_page - 1; ?>'>前へ</a></li>
+      <?php }else{ ?>
+        <li><a class="disabled">前へ</a></li>
+      <?php } ?>
+    <?php for ($i = 1; $i <= $total_page; $i++) { ?>
+      <?php if ($now_page !== $i) { ?>
+        <li><a href='?page=<?php print $i; ?>'><?php print $i; ?></a></li>
+      <?php } else { ?>
+        <li><a class="disabled"><?php print $now_page; ?></a></li>
+      <?php  } ?>
+    <?php  } ?>
+    <?php if($now_page < $total_page){ ?>
+        <li><a href='?page=<?php print $now_page + 1; ?>'>次へ</a></li>
+      <?php }else{ ?>
+        <li><a class="disabled">次へ</a></li>
+      <?php } ?>
+    </ul>
+  </div>
+  <P>全体<?php print $total_items;?>件中<?php print $beginning_item;?>&sim;<?php print $last_item;?>件表示</p>
 </body>
+
 </html>
