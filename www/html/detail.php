@@ -17,6 +17,7 @@ $db = get_db_connect();
 $user = get_login_user($db);
 $token = get_csrf_token();
 $order_id = get_post('order_id');
+
 //is_admin関数でログイン中ユーザーが管理者かどうか確認
 if(is_admin($user) === true){
   $details = get_admin_details($db, $order_id);
